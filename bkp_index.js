@@ -6,22 +6,19 @@ var passos = 0;
 var nroCortes = 1;
 var taxaMutacao = 0.25;
 var tamanho = 35;
-var populacao = 2000;
 
 function iniciar() {
 	$("#res").html("");
 	nroCortes = $("#pontosCorte").val();
 	taxaMutacao = $("#taxaMutacao").val();
 	fraseObjetivo = $("#frase").val();
-	tamanho = fraseObjetivo.length;
+	console.log(fraseObjetivo.length);
 	achou = false;
 	passos = 0;
- var i, j;
-
-	populacao = $("#populacao").val();
-    for (i =0; i < populacao; i++) {
+	 var i, j;
+    for (i =0; i < 2000; i++) {
     	var string = "";
-		for (j =0; j < tamanho; j++) {
+		for (j =0; j < 35; j++) {
 			string += possible.charAt(Math.floor(Math.random() * possible.length));
 		}
 		var vetor = [];
@@ -35,19 +32,19 @@ function iniciar() {
 
     	var vetorOrdenado = cromossomos.sort(compare);
 		var vetoresSorteio = [];
-    	for (i = 0; i < (populacao * 0.60); i++) {
+    	for (i = 0; i < 1200; i++) {
     		vetoresSorteio.push(vetorOrdenado[i]);
     	}
 
     	cromossomos = [];
     	var count = 0;
-    	var totalDeveMutar = (populacao/2) * taxaMutacao;
+    	var totalDeveMutar = 1000 * taxaMutacao;
     	var mutados = 0;
-		for (var i = 0; i < (populacao/2); i++) {
-			var pos = Math.floor(Math.random() * (populacao * 0.60));	
+		for (var i = 0; i < 1000; i++) {
+			var pos = Math.floor(Math.random() * 1200);	
 			var igual = true;
 			while (igual) {
-				var pos2 = Math.floor(Math.random() * (populacao * 0.60));
+				var pos2 = Math.floor(Math.random() * 1200);
 				if (pos2 != pos) {
 					igual = false;
 				}
@@ -59,8 +56,8 @@ function iniciar() {
 			if (nroCortes == 2) {
 				var valido = false;
 				while (!valido) {
-					pontoCorte = Math.floor(Math.random() * (tamanho - 1) + 1);
-					pontoCorte1 = Math.floor(Math.random() * (tamanho - 1) + 1);
+					pontoCorte = Math.floor(Math.random() * 34 + 1);
+					pontoCorte1 = Math.floor(Math.random() * 34 + 1);
 					if (pontoCorte < pontoCorte1) {
 						valido = true;
 					}
@@ -68,7 +65,7 @@ function iniciar() {
 				var novoFilho1 = filho1.substr(0, pontoCorte) + filho2.substr(pontoCorte, (pontoCorte1 - pontoCorte)) + filho1.substr(pontoCorte1);
 				var novoFilho2 = filho2.substr(0, pontoCorte) + filho1.substr(pontoCorte, (pontoCorte1 - pontoCorte)) + filho2.substr(pontoCorte1);
 			} else {
-				var pontoCorte = Math.floor(Math.random() * (tamanho - 1) + 1);
+				var pontoCorte = Math.floor(Math.random() * 34 + 1);
 				var novoFilho1 = filho1.substr(0, pontoCorte) + filho2.substr(pontoCorte);
 				var novoFilho2 = filho2.substr(0, pontoCorte) + filho1.substr(pontoCorte);
 			}
@@ -77,8 +74,8 @@ function iniciar() {
 			//Mutação
 			if (mutados < totalDeveMutar) {
 
-				var pontoMutacao1 = Math.floor(Math.random() * (tamanho - 1));
-				var pontoMutacao2 = Math.floor(Math.random() * (tamanho - 1));
+				var pontoMutacao1 = Math.floor(Math.random() * 34);
+				var pontoMutacao2 = Math.floor(Math.random() * 34);
 				//console.log("FILHO 1" + novoFilho1);
 				var novoFilho1 = novoFilho1.substr(0, pontoMutacao1 -1) + possible.charAt(Math.floor(Math.random() * possible.length)) + novoFilho1.substr(pontoMutacao1);
 				var novoFilho2 = novoFilho2.substr(0, pontoMutacao2 -1) + possible.charAt(Math.floor(Math.random() * possible.length)) + novoFilho2.substr(pontoMutacao2);
@@ -97,7 +94,7 @@ function iniciar() {
 
     	cromossomos = cromossomos.sort(compare);
 
-    	for (i = (populacao * 0.80); i < populacao; i++) {
+    	for (i = 1800; i < 2000; i++) {
     		cromossomos[i] = vetorOrdenado[i];
     	}
 
@@ -105,7 +102,7 @@ function iniciar() {
     		if (!achou) {
 	    		if (value["distancia"] == 0) {
 	    			achou = true;
-					$("#res").html("<br/>A frase <b>" + value["string"] + "</b> foi encontrada em " + passos + " passos.");
+					$("#res").html("<br/><b>A frase " + value["string"] + " foi encontrada em " + passos + " passos</b>");
 	    			return true;
 	    		}
 	    	}
@@ -120,7 +117,7 @@ $(document).ready(function() {
 
 function calcularFitness(palavra1, palavra2) {
 	var distancia = 0;
-	for (var i = 0; i < tamanho; i++) {
+	for (var i = 0; i < 35; i++) {
 		if (palavra1[i] != palavra2[i]) {
 			distancia++;
 		}
